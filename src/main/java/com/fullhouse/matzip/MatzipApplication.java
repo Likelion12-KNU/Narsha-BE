@@ -1,13 +1,13 @@
-package com.likelion12.test1;
+package com.fullhouse.matzip;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Test1Application {
+public class MatzipApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Test1Application.class, args);
+        SpringApplication.run(MatzipApplication.class, args);
     }
 
 }
