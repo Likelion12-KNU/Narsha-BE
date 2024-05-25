@@ -16,7 +16,7 @@ public class BoardListContoller {
         Board savedBoard = boardService.createBoard(board);
         return ResponseEntity.ok(savedBoard);
     }
-    
+
     private final BoardService boardService;
     public BoardListContoller(BoardService boardService) {
         this.boardService = boardService;
@@ -27,5 +27,11 @@ public class BoardListContoller {
             @RequestParam(value="howMany") Integer howMany,
             @RequestParam(value="pageNum") Integer pageNum){
         return new ResponseEntity<>(boardService.findPart(howMany, pageNum), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long id){
+        boardService.deleteBoard(id);
+        return ResponseEntity.noContent().build();
     }
 }
