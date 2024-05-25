@@ -41,4 +41,9 @@ public class BoardService {
     public Board createBoard(Board board){
         return boardRepository.save(board);
     }
+
+    public void deleteBoard(Long id){
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+        boardRepository.delete(board);
+    }
 }
