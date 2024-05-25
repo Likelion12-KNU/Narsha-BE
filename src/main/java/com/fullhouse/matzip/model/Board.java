@@ -15,9 +15,18 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
+    // 제목
     private String title;
+
+    // 내용
     private String contents;
+
+    // 좋아요 수
     private int likes;
+
+    // 생성 시간
     private LocalDateTime writeDt;
+
+    // 수정 시간
     private LocalDateTime editDt;
 }
