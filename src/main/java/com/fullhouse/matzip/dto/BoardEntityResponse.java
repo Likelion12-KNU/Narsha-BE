@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class BoardListEntityResponse {
+public class BoardEntityResponse {
     @Schema(description = "제목")
     private String title;
 

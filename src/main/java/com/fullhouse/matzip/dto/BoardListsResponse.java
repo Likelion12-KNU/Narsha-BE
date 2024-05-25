@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BoardListsResponse {
     @Schema(description = "BoardListDTO 리스트")
-    private List<BoardListEntityResponse> boardLists;
+    private List<BoardEntityResponse> boardLists;
 
     @Schema(description = "화면에 표기할 페이지 수", defaultValue = "10", example = "30")
     private int viewCount;

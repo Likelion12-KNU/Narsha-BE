@@ -33,8 +33,25 @@ public class BoardListController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        BoardCreateRequest response = boardService.createBoard(request);
+        BoardCreateRequest response = boardService.create(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/lists")
+    @Operation(summary = "게시판 목록")
+    public ResponseEntity<BoardListsResponse> findBoardPart(
+            @Parameter(description = "화면에 표기할 항목 수", required = false)
+            @RequestParam(value="howMany") Integer howMany,
+
+            @Parameter(description = "요청할 페이지 번호", required = true)
+            @RequestParam(value="pageNum") Integer pageNum
+    ) {
+        // 값의 범위 검사 추가
+        if (howMany <= 0 || pageNum <= 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(boardService.findPart(howMany, pageNum), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -47,7 +64,7 @@ public class BoardListController {
     ) {
         // 존재하지 않는 ID에 대한 예외 처리
         try {
-            boardService.updateBoard(id, request);
+            boardService.update(id, request);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -62,27 +79,11 @@ public class BoardListController {
     ) {
         // 존재하지 않는 ID에 대한 예외 처리
         try {
-            boardService.deleteBoard(id);
+            boardService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("/lists")
-    @Operation(summary = "게시판 목록")
-    public ResponseEntity<BoardListsResponse> findPart(
-            @Parameter(description = "화면에 표기할 항목 수", required = false)
-            @RequestParam(value="howMany") Integer howMany,
-
-            @Parameter(description = "요청할 페이지 번호", required = true)
-            @RequestParam(value="pageNum") Integer pageNum
-    ) {
-        // 값의 범위 검사 추가
-        if (howMany <= 0 || pageNum <= 0) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(boardService.findPart(howMany, pageNum), HttpStatus.OK);
-    }
 }
