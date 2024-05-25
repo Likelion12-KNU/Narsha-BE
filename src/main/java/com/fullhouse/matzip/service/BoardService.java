@@ -37,4 +37,8 @@ public class BoardService {
 
         return new BoardListRequestDTO(boardLists, page.getTotalPages());
     }
+
+    public Board createBoard(Board board){
+        return boardRepository.save(board);
+    }
 }
