@@ -8,10 +8,10 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class BoardListRequestDTO {
+public class BoardListsResponse {
     @Schema(description = "BoardListDTO 리스트")
-    List<BoardListDTO> boardLists;
+    private List<BoardEntityResponse> boardLists;
 
-    @Schema(description = "화면에 표기할 페이지 수")
-    int viewCount;
+    @Schema(description = "화면에 표기할 페이지 수", defaultValue = "10", example = "30")
+    private int viewCount;
 }
