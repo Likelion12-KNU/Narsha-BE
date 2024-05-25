@@ -39,6 +39,16 @@ public class BoardService {
     }
 
     /**
+     * ID을 기준으로 게시판을 검색하여 리턴
+     * @param id 검색할 ID
+     * @return 검색한 BoardEntityResponse 객체
+     */
+    public BoardEntityResponse findById(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+        return new BoardEntityResponse(board.getTitle(), board.getLikes(), board.getEditDt());
+    }
+
+    /**
      * 페이지 단위로 게시판 리스트 리턴
      *
      * @param howMany 한 페이지에 들어가는 게시판의 수

@@ -1,6 +1,7 @@
 package com.fullhouse.matzip.controller;
 
 import com.fullhouse.matzip.dto.BoardCreateRequest;
+import com.fullhouse.matzip.dto.BoardEntityResponse;
 import com.fullhouse.matzip.dto.BoardListsResponse;
 import com.fullhouse.matzip.dto.BoardUpdateRequest;
 import com.fullhouse.matzip.service.BoardService;
@@ -35,6 +36,20 @@ public class BoardListController {
 
         BoardCreateRequest response = boardService.create(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "상세 게시판")
+    public ResponseEntity<BoardEntityResponse> findBoardById(
+            @Parameter(description = "검색할 게시판 ID", required = true)
+            @PathVariable Long id
+    ) {
+        // 존재하지 않는 ID에 대한 예외 처리
+        try {
+            return new ResponseEntity<>(boardService.findById(id), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/lists")
