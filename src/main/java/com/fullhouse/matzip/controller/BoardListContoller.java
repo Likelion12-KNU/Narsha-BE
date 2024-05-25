@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins="*")
 public class BoardListContoller {
 
+    @PostMapping
+    public ResponseEntity<Board> createBoard(@RequestBody Board board){
+        Board savedBoard = boardService.createBoard(board);
+        return ResponseEntity.ok(savedBoard);
+    }
+    
     private final BoardService boardService;
     public BoardListContoller(BoardService boardService) {
         this.boardService = boardService;
