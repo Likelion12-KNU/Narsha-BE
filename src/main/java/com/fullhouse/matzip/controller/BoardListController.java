@@ -2,6 +2,7 @@ package com.fullhouse.matzip.controller;
 
 import com.fullhouse.matzip.dto.BoardCreateRequest;
 import com.fullhouse.matzip.dto.BoardListsResponse;
+import com.fullhouse.matzip.dto.BoardUpdateRequest;
 import com.fullhouse.matzip.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,6 +35,23 @@ public class BoardListController {
 
         BoardCreateRequest response = boardService.createBoard(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "게시판 변경")
+    public ResponseEntity<Void> updateBoard(
+            @Parameter(description = "변경할 게시판 ID", required = true)
+            @PathVariable Long id,
+            @Parameter(description = "게시판 변경 요청 객체", required = true)
+            @RequestBody BoardUpdateRequest request
+    ) {
+        // 존재하지 않는 ID에 대한 예외 처리
+        try {
+            boardService.updateBoard(id, request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")

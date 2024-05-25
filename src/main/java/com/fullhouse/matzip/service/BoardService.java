@@ -3,6 +3,7 @@ package com.fullhouse.matzip.service;
 import com.fullhouse.matzip.dto.BoardCreateRequest;
 import com.fullhouse.matzip.dto.BoardListsResponse;
 import com.fullhouse.matzip.dto.BoardListEntityResponse;
+import com.fullhouse.matzip.dto.BoardUpdateRequest;
 import com.fullhouse.matzip.model.Board;
 import com.fullhouse.matzip.repository.BoardRepository;
 import org.springframework.data.domain.PageRequest;
@@ -53,6 +54,21 @@ public class BoardService {
 
         // 리턴을 위한 dto 생성 및 리턴
         return new BoardCreateRequest(savedBoard.getTitle(), savedBoard.getContents());
+    }
+
+    /**
+     * 주어진 ID를 가진 게시판을 수정
+     * @param id 수정할 게시판 ID
+     * @param request 게시판 수정 요청 객체
+     * @return 생성된 게시판의 요소를 포함하는 BoardUpdateRequest 객체
+     */
+    public BoardUpdateRequest updateBoard(Long id, BoardUpdateRequest request) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+        board.setTitle(request.getTitle());
+        board.setContents(request.getContents());
+
+        Board savedBoard = boardRepository.save(board);
+        return new BoardUpdateRequest(savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes());
     }
 
     /**
