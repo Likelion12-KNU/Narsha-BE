@@ -1,14 +1,14 @@
 package com.fullhouse.matzip.service;
 
 import com.fullhouse.matzip.dto.BoardCreateRequest;
-import com.fullhouse.matzip.dto.BoardListsResponse;
 import com.fullhouse.matzip.dto.BoardEntityResponse;
+import com.fullhouse.matzip.dto.BoardListsResponse;
 import com.fullhouse.matzip.dto.BoardUpdateRequest;
 import com.fullhouse.matzip.model.Board;
 import com.fullhouse.matzip.repository.BoardRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,16 +18,18 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    public BoardService(BoardRepository boardRepository){
+
+    public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
     }
 
     /**
      * 요청을 기반으로 새로운 게시판을 생성
+     *
      * @param request 게시판 생성 요청 객체
      * @return 생성된 게시판의 제목과 내용을 포함하는 BoardCreateRequest 객체
      */
-    public BoardCreateRequest create(BoardCreateRequest request){
+    public BoardCreateRequest create(BoardCreateRequest request) {
         // 새로운 model 생성
         Board board = new Board();
         board.setTitle(request.getTitle());
@@ -40,12 +42,13 @@ public class BoardService {
 
     /**
      * ID을 기준으로 게시판을 검색하여 리턴
+     *
      * @param id 검색할 ID
      * @return 검색한 BoardEntityResponse 객체
      */
     public BoardEntityResponse findById(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
-        return new BoardEntityResponse(board.getTitle(), board.getLikes(), board.getEditDt());
+        return new BoardEntityResponse(board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt());
     }
 
     /**
@@ -60,7 +63,7 @@ public class BoardService {
         Page<Board> page = boardRepository.findAll(pageable);
 
         List<BoardEntityResponse> boardLists = page.getContent().stream()
-                .map(board -> new BoardEntityResponse(board.getTitle(), board.getLikes(), board.getEditDt()))
+                .map(board -> new BoardEntityResponse(board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt()))
                 .collect(Collectors.toList());
 
         return new BoardListsResponse(boardLists, page.getTotalPages());
@@ -68,7 +71,8 @@ public class BoardService {
 
     /**
      * 주어진 ID를 가진 게시판을 수정
-     * @param id 수정할 게시판 ID
+     *
+     * @param id      수정할 게시판 ID
      * @param request 게시판 수정 요청 객체
      * @return 생성된 게시판의 요소를 포함하는 BoardUpdateRequest 객체
      */
@@ -78,14 +82,16 @@ public class BoardService {
         board.setContents(request.getContents());
 
         Board savedBoard = boardRepository.save(board);
-        return new BoardUpdateRequest(savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes());
+        return new BoardUpdateRequest(savedBoard.getTitle(), savedBoard.getContents());
+
     }
 
     /**
      * 주어진 ID를 가진 게시판을 삭제
+     *
      * @param id 삭제할 게시판 ID
      */
-    public void delete(Long id){
+    public void delete(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
         boardRepository.delete(board);
     }

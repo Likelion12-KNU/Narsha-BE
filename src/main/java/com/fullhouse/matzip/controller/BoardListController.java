@@ -62,16 +62,21 @@ public class BoardListController {
             @RequestParam(value="pageNum") Integer pageNum
     ) {
         // 값의 범위 검사 추가
-        if (howMany <= 0 || pageNum <= 0) {
+        if (howMany <= 0 || pageNum < 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(boardService.findPart(howMany, pageNum), HttpStatus.OK);
+        var boardLists =  boardService.findPart(howMany, pageNum);
+        if (boardLists.getBoardLists().isEmpty()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(boardLists, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "게시판 변경")
-    public ResponseEntity<Void> updateBoard(
+    public ResponseEntity<BoardUpdateRequest> updateBoard(
             @Parameter(description = "변경할 게시판 ID", required = true)
             @PathVariable Long id,
             @Parameter(description = "게시판 변경 요청 객체", required = true)
@@ -79,8 +84,8 @@ public class BoardListController {
     ) {
         // 존재하지 않는 ID에 대한 예외 처리
         try {
-            boardService.update(id, request);
-            return new ResponseEntity<>(HttpStatus.OK);
+            var updateBoard = boardService.update(id, request);
+            return new ResponseEntity<>(updateBoard, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

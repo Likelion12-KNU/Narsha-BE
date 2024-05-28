@@ -12,6 +12,9 @@ public class BoardEntityResponse {
     @Schema(description = "제목")
     private String title;
 
+    @Schema(description = "내용")
+    private String contents;
+
     @Schema(description = "좋아요 수")
     private int likes;
 

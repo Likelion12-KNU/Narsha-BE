@@ -13,7 +13,4 @@ public class BoardUpdateRequest {
     @Schema(description = "글 내용")
     private String contents;
 
-    @Schema(description = "좋아요 개수")
-    private int likes;
-
 }
