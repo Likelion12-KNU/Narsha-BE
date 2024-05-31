@@ -2,7 +2,6 @@ package com.fullhouse.matzip.service;
 
 import com.fullhouse.matzip.dto.BoardEntityResponse;
 import com.fullhouse.matzip.dto.CommentCreateRequest;
-import com.fullhouse.matzip.dto.CommentListsResponse;
 import com.fullhouse.matzip.model.Board;
 import com.fullhouse.matzip.model.Comment;
 import com.fullhouse.matzip.repository.BoardRepository;
