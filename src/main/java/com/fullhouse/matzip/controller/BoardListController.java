@@ -100,9 +100,9 @@ public class BoardListController {
         // 존재하지 않는 ID에 대한 예외 처리
         try {
             boardService.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 

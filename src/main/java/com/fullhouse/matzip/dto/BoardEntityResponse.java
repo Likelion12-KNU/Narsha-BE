@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class BoardEntityResponse {
+    @Schema(description = "계시판 id")
+    private long id;
+
     @Schema(description = "제목")
     private String title;
 

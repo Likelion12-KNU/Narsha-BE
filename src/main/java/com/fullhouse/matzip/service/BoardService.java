@@ -48,7 +48,7 @@ public class BoardService {
      */
     public BoardEntityResponse findById(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
-        return new BoardEntityResponse(board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt());
+        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt());
     }
 
     /**
@@ -63,7 +63,7 @@ public class BoardService {
         Page<Board> page = boardRepository.findAll(pageable);
 
         List<BoardEntityResponse> boardLists = page.getContent().stream()
-                .map(board -> new BoardEntityResponse(board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt()))
+                .map(board -> new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt()))
                 .collect(Collectors.toList());
 
         return new BoardListsResponse(boardLists, page.getTotalPages());
