@@ -60,4 +60,16 @@ public class Board {
         comments.remove(comment);
         comment.setBoard(null);
     }
+
+    // 위도
+    @Setter
+    private double latitude;
+
+    // 경도
+    @Setter
+    private double longitude;
+
+    // 태그
+    @Setter
+    private String tag;
 }

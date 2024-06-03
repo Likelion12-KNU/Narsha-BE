@@ -68,6 +68,23 @@ public class BoardListController {
         }
     }
 
+    @PutMapping("/{id}/coordinate")
+    @Operation(summary = "좌표 생성")
+    public ResponseEntity<Coordinate> addBoardCoordinate(
+            @Parameter(description = "변경할 게시판 ID", required = true)
+            @PathVariable Long id,
+            @Parameter(description = "좌표 생성 요청 객체", required = true)
+            @RequestBody Coordinate coordinate
+    ) {
+        // 존재하지 않는 ID에 대한 예외 처리
+        try {
+            var updatedCoordinate = boardService.updateCoordinate(id, coordinate);
+            return new ResponseEntity<>(updatedCoordinate, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "상세 게시판")
     public ResponseEntity<BoardEntityResponse> findBoardById(
@@ -116,6 +133,23 @@ public class BoardListController {
         try {
             var updateBoard = boardService.update(id, request);
             return new ResponseEntity<>(updateBoard, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{id}/tag")
+    @Operation(summary = "게시판 태그 변경")
+    public ResponseEntity<BoardEntityResponse> updateBoardTag(
+            @Parameter(description = "변경할 게시판 ID", required = true)
+            @PathVariable Long id,
+            @Parameter(description = "게시판 태그 변경 요청", required = true)
+            @RequestParam String tag
+    ) {
+        // 존재하지 않는 ID에 대한 예외 처리
+        try {
+            var updatedBoard = boardService.updateTag(id, tag);
+            return new ResponseEntity<>(updatedBoard, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

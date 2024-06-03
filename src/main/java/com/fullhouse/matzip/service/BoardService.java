@@ -140,6 +140,43 @@ public class BoardService {
     }
 
     /**
+     * 주어진 ID를 가진 게시판의 태그를 업데이트
+     *
+     * @param id  태그를 업데이트할 게시판 ID
+     * @param tag 업데이트할 태그
+     * @return 업데이트된 태그를 포함하는 BoardEntityResponse 객체
+     */
+    public BoardEntityResponse updateTag(Long id, String tag) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+        board.setTag(tag);
+
+        Board savedBoard = boardRepository.save(board);
+        List<CommentEntity> commentEntities = board.getComments().stream()
+                .map(comment -> new CommentEntity(
+                        comment.getComment_id(),
+                        comment.getContents()
+                )).toList();
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities);
+    }
+
+    /**
+     * 게시판에 좌표를 추가하거나 업데이트합니다.
+     *
+     * @param id         좌표를 추가 또는 업데이트할 게시판의 ID
+     * @param coordinate 추가 또는 업데이트할 좌표 정보
+     * @return 업데이트된 좌표를 포함하는 Coordinate 객체
+     * @throws RuntimeException 게시판을 찾을 수 없는 경우 예외 발생
+     */
+    public Coordinate updateCoordinate(Long id, Coordinate coordinate) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id" + id));
+        board.setLatitude(coordinate.getLongitude());
+        board.setLongitude(coordinate.getLongitude());
+
+        Board saveBoard = boardRepository.save(board);
+        return new Coordinate(saveBoard.getLatitude(), saveBoard.getLongitude());
+    }
+
+    /**
      * 주어진 ID를 가진 게시판을 삭제
      *
      * @param id 삭제할 게시판 ID
