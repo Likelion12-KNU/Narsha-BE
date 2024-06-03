@@ -13,4 +13,7 @@ public class BoardCreateRequest {
     @Schema(description = "글 내용")
     private String contents;
 
+    @Schema(description = "좌표")
+    private Coordinate coordinate;
+    
 }

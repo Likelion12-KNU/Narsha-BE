@@ -32,10 +32,12 @@ public class BoardService {
         Board board = new Board();
         board.setTitle(request.getTitle());
         board.setContents(request.getContents());
+        board.setLatitude(request.getCoordinate().getLatitude());
+        board.setLongitude(request.getCoordinate().getLongitude());
         Board savedBoard = boardRepository.save(board);
 
         // 리턴을 위한 dto 생성 및 리턴
-        return new BoardCreateRequest(savedBoard.getTitle(), savedBoard.getContents());
+        return new BoardCreateRequest(savedBoard.getTitle(), savedBoard.getContents(), new Coordinate(savedBoard.getLatitude(), savedBoard.getLongitude()));
     }
 
     /**

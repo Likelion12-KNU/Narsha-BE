@@ -69,7 +69,7 @@ public class BoardListController {
     }
 
     @PutMapping("/{id}/coordinate")
-    @Operation(summary = "좌표 생성")
+    @Operation(summary = "좌표 수정")
     public ResponseEntity<Coordinate> addBoardCoordinate(
             @Parameter(description = "변경할 게시판 ID", required = true)
             @PathVariable Long id,
