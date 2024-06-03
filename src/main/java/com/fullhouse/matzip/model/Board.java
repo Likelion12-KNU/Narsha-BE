@@ -48,4 +48,8 @@ public class Board {
     // 경도
     @Setter
     private double longitude;
+
+    // 태그
+    @Setter
+    private String tag;
 }
