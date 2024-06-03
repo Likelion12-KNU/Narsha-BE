@@ -6,16 +6,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CommentCreateRequest {
+public class CommentEntity {
     @Schema(description = "id")
     private long comment_id;
 
-    public Long getComment_id(){
-        return comment_id;
-
     @Schema(description = "댓글 내용")
-    private String content;
-    }
+    private String contents;
 
 }
 

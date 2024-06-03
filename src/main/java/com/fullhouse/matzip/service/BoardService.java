@@ -1,10 +1,8 @@
 package com.fullhouse.matzip.service;
 
-import com.fullhouse.matzip.dto.BoardCreateRequest;
-import com.fullhouse.matzip.dto.BoardEntityResponse;
-import com.fullhouse.matzip.dto.BoardListsResponse;
-import com.fullhouse.matzip.dto.BoardUpdateRequest;
+import com.fullhouse.matzip.dto.*;
 import com.fullhouse.matzip.model.Board;
+import com.fullhouse.matzip.model.Comment;
 import com.fullhouse.matzip.repository.BoardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,6 +39,48 @@ public class BoardService {
     }
 
     /**
+     * ID을 기준으로 좋아요 수 업데이트
+     *
+     * @param id 검색할 ID
+     * @return 검색한 BoardEntityResponse 객체
+     */
+    public BoardEntityResponse addLikeById(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+        board.addLikes();
+        Board savedBoard = boardRepository.save(board);
+
+        List<CommentEntity> commentEntities = board.getComments().stream()
+                .map(comment -> new CommentEntity(
+                        comment.getComment_id(),
+                        comment.getContents()
+                )).collect(Collectors.toList());
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities);
+    }
+
+    /***
+     * boardId을 기준으로 Comment 추가
+     * @param boardId 게시판 ID
+     * @param comment 댓글
+     * @return 추가한 BoardEntityResponse 객체
+     */
+    public BoardEntityResponse addCommentToBoard(long boardId, CommentEntity comment) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException("Post not found with id " + boardId));
+
+        Comment newComment = new Comment();
+        newComment.setContents(comment.getContents());
+        newComment.setBoard(board);
+
+        board.addComment(newComment);
+
+        List<CommentEntity> commentEntities = board.getComments().stream()
+                .map(comment_ -> new CommentEntity(
+                        comment_.getComment_id(),
+                        comment_.getContents()
+                )).collect(Collectors.toList());
+        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt(), commentEntities);
+    }
+
+    /**
      * ID을 기준으로 게시판을 검색하여 리턴
      *
      * @param id 검색할 ID
@@ -48,7 +88,13 @@ public class BoardService {
      */
     public BoardEntityResponse findById(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
-        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt());
+
+        List<CommentEntity> commentEntities = board.getComments().stream()
+                .map(comment -> new CommentEntity(
+                        comment.getComment_id(),
+                        comment.getContents()
+                )).collect(Collectors.toList());
+        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt(), commentEntities);
     }
 
     /**
@@ -63,9 +109,16 @@ public class BoardService {
         Page<Board> page = boardRepository.findAll(pageable);
 
         List<BoardEntityResponse> boardLists = page.getContent().stream()
-                .map(board -> new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt()))
+                .map(board -> new BoardEntityResponse(
+                        board.getId(),
+                        board.getTitle(),
+                        board.getContents(),
+                        board.getLikes(),
+                        board.getEditDt(),
+                        board.getComments().stream()
+                                .map(comments -> new CommentEntity(comments.getComment_id(), comments.getContents()))
+                                .collect(Collectors.toList())))
                 .collect(Collectors.toList());
-
         return new BoardListsResponse(boardLists, page.getTotalPages());
     }
 
@@ -96,17 +149,4 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
-    /**
-     * ID을 기준으로 좋아요 수 업데이트
-     *
-     * @param id 검색할 ID
-     * @return 검색한 BoardEntityResponse 객체
-     */
-    public BoardEntityResponse addLikeById(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
-        board.addLikes();
-
-        Board savedBoard = boardRepository.save(board);
-        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt());
-    }
 }

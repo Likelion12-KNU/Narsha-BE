@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -23,5 +24,8 @@ public class BoardEntityResponse {
 
     @Schema(description = "수정 시간")
     private LocalDateTime editDt;
+
+    @Schema(description = "CommentEntity 리스트")
+    private List<CommentEntity> commentLists;
 }
 
