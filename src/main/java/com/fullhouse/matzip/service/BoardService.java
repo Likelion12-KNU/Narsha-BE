@@ -96,4 +96,17 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
+    /**
+     * ID을 기준으로 좋아요 수 업데이트
+     *
+     * @param id 검색할 ID
+     * @return 검색한 BoardEntityResponse 객체
+     */
+    public BoardEntityResponse addLikeById(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+        board.addLikes();
+
+        Board savedBoard = boardRepository.save(board);
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt());
+    }
 }
