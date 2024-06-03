@@ -115,4 +115,19 @@ public class BoardService {
         Board saveBoard = boardRepository.save(board);
         return new Coordinate(saveBoard.getLatitude(), saveBoard.getLongitude());
     }
+
+    /**
+     * 주어진 ID를 가진 게시판의 태그를 업데이트
+     *
+     * @param id   태그를 업데이트할 게시판 ID
+     * @param tag  업데이트할 태그
+     * @return     업데이트된 태그를 포함하는 BoardEntityResponse 객체
+     */
+    public BoardEntityResponse updateTag(Long id, String tag) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+        board.setTag(tag);
+
+        Board savedBoard = boardRepository.save(board);
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt());
+    }
 }
