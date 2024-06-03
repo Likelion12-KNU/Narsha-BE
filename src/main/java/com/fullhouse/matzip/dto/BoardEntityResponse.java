@@ -27,5 +27,8 @@ public class BoardEntityResponse {
 
     @Schema(description = "CommentEntity 리스트")
     private List<CommentEntity> commentLists;
+
+    @Schema(description = "좌표")
+    private Coordinate coordinate;
 }
 
