@@ -37,7 +37,7 @@ public class BoardService {
         Board savedBoard = boardRepository.save(board);
 
         // 리턴을 위한 dto 생성 및 리턴
-        return new BoardCreateRequest(savedBoard.getTitle(), savedBoard.getContents(), new Coordinate(savedBoard.getLatitude(), savedBoard.getLongitude()));
+        return new BoardCreateRequest(savedBoard.getTitle(), savedBoard.getContents(), new Coordinate(savedBoard.getLatitude(), savedBoard.getLongitude()), savedBoard.getStoreName());
     }
 
     /**
@@ -57,7 +57,7 @@ public class BoardService {
                         comment.getContents()
                 )).collect(Collectors.toList());
         Coordinate coordinate = new Coordinate(savedBoard.getLatitude(), savedBoard.getLongitude());
-        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities, coordinate);
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities, coordinate, savedBoard.getStoreName());
     }
 
     /***
@@ -81,7 +81,7 @@ public class BoardService {
                         comment_.getContents()
                 )).collect(Collectors.toList());
         Coordinate coordinate = new Coordinate(board.getLatitude(), board.getLongitude());
-        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt(), commentEntities, coordinate);
+        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt(), commentEntities, coordinate, board.getStoreName());
     }
 
     /**
@@ -99,7 +99,7 @@ public class BoardService {
                         comment.getContents()
                 )).collect(Collectors.toList());
         Coordinate coordinate = new Coordinate(board.getLatitude(), board.getLongitude());
-        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt(), commentEntities, coordinate);
+        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt(), commentEntities, coordinate, board.getStoreName());
     }
 
     /**
@@ -124,7 +124,8 @@ public class BoardService {
                                 .map(comments -> new CommentEntity(comments.getComment_id(), comments.getContents()))
                                 .collect(Collectors.toList()),
                         new Coordinate(board.getLatitude(), board.getLongitude()
-                        )))
+                        ),
+                        board.getStoreName()))
                 .collect(Collectors.toList());
         return new BoardListsResponse(boardLists, page.getTotalPages());
     }
@@ -164,7 +165,7 @@ public class BoardService {
                         comment.getContents()
                 )).toList();
         Coordinate coordinate = new Coordinate(board.getLatitude(), board.getLongitude());
-        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities, coordinate);
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities, coordinate, savedBoard.getStoreName());
     }
 
     /**

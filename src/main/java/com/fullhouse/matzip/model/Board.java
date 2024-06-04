@@ -69,6 +69,10 @@ public class Board {
     @Setter
     private double longitude;
 
+    // 가게명
+    @Setter
+    private String storeName = "";
+
     // 태그
     @Setter
     private String tag;

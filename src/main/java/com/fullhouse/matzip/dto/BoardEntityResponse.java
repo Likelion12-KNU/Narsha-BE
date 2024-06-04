@@ -30,5 +30,8 @@ public class BoardEntityResponse {
 
     @Schema(description = "좌표")
     private Coordinate coordinate;
+
+    @Schema(description = "가게명")
+    private String storeName;
 }
 

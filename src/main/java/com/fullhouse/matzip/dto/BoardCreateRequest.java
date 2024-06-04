@@ -15,5 +15,8 @@ public class BoardCreateRequest {
 
     @Schema(description = "좌표")
     private Coordinate coordinate;
+
+    @Schema(description = "가게명")
+    private String storeName;
     
 }
