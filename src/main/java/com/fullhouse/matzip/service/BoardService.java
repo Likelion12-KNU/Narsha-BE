@@ -74,14 +74,15 @@ public class BoardService {
         newComment.setBoard(board);
 
         board.addComment(newComment);
+        Board savedBoard = boardRepository.save(board);
 
-        List<CommentEntity> commentEntities = board.getComments().stream()
+        List<CommentEntity> commentEntities = savedBoard.getComments().stream()
                 .map(comment_ -> new CommentEntity(
                         comment_.getComment_id(),
                         comment_.getContents()
                 )).collect(Collectors.toList());
-        Coordinate coordinate = new Coordinate(board.getLatitude(), board.getLongitude());
-        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt(), commentEntities, coordinate, board.getStoreName());
+        Coordinate coordinate = new Coordinate(savedBoard.getLatitude(), savedBoard.getLongitude());
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities, coordinate, savedBoard.getStoreName());
     }
 
     /**
