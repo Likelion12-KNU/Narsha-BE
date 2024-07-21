@@ -1,4 +1,4 @@
-package com.fullhouse.matzip.dto;
+package com.narsha.nurspace.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

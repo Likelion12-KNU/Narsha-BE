@@ -1,4 +1,4 @@
-package com.fullhouse.matzip.config;
+package com.narsha.nurspace.config;
 
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 // https://haenny.tistory.com/442
 // https://velog.io/@im2sh/Spring-boot-Spring-boot-3-Swagger-3.0-%EC%84%A4%EC%A0%95
 @OpenAPIDefinition(
-        info = @Info(title = "matZip API 명세서",
-                description = "fullhouse matzip API 명세서",
+        info = @Info(title = "nurSpace API 명세서",
+                description = "narsha nurspace API 명세서",
                 version = "v1"))
 @RequiredArgsConstructor
 @Configuration
@@ -23,7 +23,7 @@ public class SwaggerConfig {
         String[] paths = {"/v1/**"};
 
         return GroupedOpenApi.builder()
-                .group("matZip API 명세서")  // 그룹 이름을 설정한다.
+                .group("nurSpace API 명세서")  // 그룹 이름을 설정한다.
                 .pathsToMatch(paths)     // 그룹에 속하는 경로 패턴을 지정한다.
                 .build();
     }

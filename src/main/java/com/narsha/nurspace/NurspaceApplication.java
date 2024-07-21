@@ -1,13 +1,13 @@
-package com.fullhouse.matzip;
+package com.narsha.nurspace;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MatzipApplication {
+public class NurspaceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MatzipApplication.class, args);
+        SpringApplication.run(NurspaceApplication.class, args);
     }
 
 }

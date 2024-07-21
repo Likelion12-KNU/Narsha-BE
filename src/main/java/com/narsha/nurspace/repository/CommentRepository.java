@@ -1,6 +1,6 @@
-package com.fullhouse.matzip.repository;
+package com.narsha.nurspace.repository;
 
-import com.fullhouse.matzip.model.Comment;
+import com.narsha.nurspace.model.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

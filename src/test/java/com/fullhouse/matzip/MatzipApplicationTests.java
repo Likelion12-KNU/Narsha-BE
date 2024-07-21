@@ -1,10 +1,10 @@
-package com.fullhouse.matzip;
+package com.narsha.nurspace;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MatzipApplicationTests {
+class NurspaceApplicationTests {
 
     @Test
     void contextLoads() {

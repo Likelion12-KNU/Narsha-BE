@@ -1,9 +1,9 @@
-package com.fullhouse.matzip.service;
+package com.narsha.nurspace.service;
 
-import com.fullhouse.matzip.dto.*;
-import com.fullhouse.matzip.model.Board;
-import com.fullhouse.matzip.model.Comment;
-import com.fullhouse.matzip.repository.BoardRepository;
+import com.narsha.nurspace.repository.BoardRepository;
+import com.narsha.nurspace.dto.*;
+import com.narsha.nurspace.model.Board;
+import com.narsha.nurspace.model.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

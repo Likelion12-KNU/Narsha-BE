@@ -1,4 +1,4 @@
-package com.fullhouse.matzip.model;
+package com.narsha.nurspace.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,8 +1,8 @@
-package com.fullhouse.matzip.service;
+package com.narsha.nurspace.service;
 
-import com.fullhouse.matzip.dto.CommentEntity;
-import com.fullhouse.matzip.model.Comment;
-import com.fullhouse.matzip.repository.CommentRepository;
+import com.narsha.nurspace.dto.CommentEntity;
+import com.narsha.nurspace.repository.CommentRepository;
+import com.narsha.nurspace.model.Comment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

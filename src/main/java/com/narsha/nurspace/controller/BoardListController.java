@@ -1,7 +1,7 @@
-package com.fullhouse.matzip.controller;
+package com.narsha.nurspace.controller;
 
-import com.fullhouse.matzip.dto.*;
-import com.fullhouse.matzip.service.BoardService;
+import com.narsha.nurspace.dto.*;
+import com.narsha.nurspace.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
