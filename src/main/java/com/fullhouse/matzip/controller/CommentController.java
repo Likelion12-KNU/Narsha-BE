@@ -1,73 +1,52 @@
 package com.fullhouse.matzip.controller;
 
-import com.fullhouse.matzip.dto.CommentCreateRequest;
+import com.fullhouse.matzip.dto.CommentEntity;
 import com.fullhouse.matzip.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api/Comments")
 @CrossOrigin(origins="*")
 @Tag(name = "댓글 API Controller", description = "댓글 정보를 제공하는 메인 컨트롤러")
 public class CommentController {
-
     private final CommentService commentService;
-
-    public CommentController(CommentService commentService){this.commentService = commentService;}
-
-    @PostMapping
-    @Operation(summary = "댓글 기능 추가")
-    public ResponseEntity<CommentCreateRequest> createComment(
-            @Parameter(description = "댓글 생성 요청 객체", required = true)
-            @RequestBody CommentCreateRequest request
-            )
-    {
-        if (request == null || request.getComment_id() == null || request.getContent() == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        CommentCreateRequest response = commentService.create(request);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    @Operation(summary = "댓글 전체 조회")
-    public ResponseEntity<List<CommentCreateRequest>> getAllComments() {
-        List<CommentCreateRequest> comments = commentService.findAll();
-        return new ResponseEntity<>(comments, HttpStatus.OK);
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "댓글 단일 조회")
-    public ResponseEntity<CommentCreateRequest> getCommentById(
-            @Parameter(description = "댓글 ID", required = true)
-            @PathVariable long id
+    @Operation(summary = "상세 댓글")
+    public ResponseEntity<CommentEntity> findCommentById(
+            @Parameter(description = "검색할 댓글 ID", required = true)
+            @PathVariable Long id
     ) {
-        CommentCreateRequest comment = commentService.findById(id);
-        if (comment != null) {
-            return new ResponseEntity<>(comment, HttpStatus.OK);
-        } else {
+        // 존재하지 않는 ID에 대한 예외 처리
+        try {
+            return new ResponseEntity<>(commentService.findById(id), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "댓글 수정")
-    public ResponseEntity<CommentCreateRequest> updateComment(
-            @Parameter(description = "댓글 ID", required = true)
-            @PathVariable long id,
-            @Parameter(description = "댓글 수정 요청 객체", required = true)
-            @RequestBody CommentCreateRequest request
+    @Operation(summary = "댓글 변경")
+    public ResponseEntity<CommentEntity> updateComment(
+            @Parameter(description = "변경할 댓글 ID", required = true)
+            @PathVariable Long id,
+            @Parameter(description = "댓글 변경 요청 객체", required = true)
+            @RequestBody CommentEntity request
     ) {
-        CommentCreateRequest updatedComment = commentService.update(id, request);
-        if (updatedComment != null) {
-            return new ResponseEntity<>(updatedComment, HttpStatus.OK);
-        } else {
+        // 존재하지 않는 ID에 대한 예외 처리
+        try {
+            var updateComment = commentService.update(id, request);
+            return new ResponseEntity<>(updateComment, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -75,14 +54,15 @@ public class CommentController {
     @DeleteMapping("/{id}")
     @Operation(summary = "댓글 삭제")
     public ResponseEntity<Void> deleteComment(
-            @Parameter(description = "댓글 ID", required = true)
-            @PathVariable long id
+            @Parameter(description = "삭제할 댓글 ID", required = true)
+            @PathVariable Long id
     ) {
-        boolean isDeleted = commentService.delete(id);
-        if (isDeleted) {
+        // 존재하지 않는 ID에 대한 예외 처리
+        try {
+            commentService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

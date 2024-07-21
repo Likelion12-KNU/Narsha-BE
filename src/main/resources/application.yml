@@ -1,9 +1,9 @@
 spring:
   datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: "jdbc:mysql://localhost:3306/mydatabase?autoReconnect=true&useUnicode=true&serverTimezone=Asia/Seoul&characterEncoding=utf8"
+#    url: "jdbc:mysql://localhost:3306/matzip_db?autoReconnect=true&useUnicode=true&serverTimezone=Asia/Seoul&characterEncoding=utf8"
     driver-class-name: com.mysql.jdbc.Driver
-    url: "jdbc:mysql://localhost:3306/mydatabase?auto"
+    url: "jdbc:mysql://localhost:3306/matzip_db?auto"
     username: ${DB_USER}
     password: ${DB_PASSWD}
   jpa:
