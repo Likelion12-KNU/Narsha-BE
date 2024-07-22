@@ -32,12 +32,10 @@ public class BoardService {
         Board board = new Board();
         board.setTitle(request.getTitle());
         board.setContents(request.getContents());
-        board.setLatitude(request.getCoordinate().getLatitude());
-        board.setLongitude(request.getCoordinate().getLongitude());
         Board savedBoard = boardRepository.save(board);
 
         // 리턴을 위한 dto 생성 및 리턴
-        return new BoardCreateRequest(savedBoard.getTitle(), savedBoard.getContents(), new Coordinate(savedBoard.getLatitude(), savedBoard.getLongitude()), savedBoard.getStoreName());
+        return new BoardCreateRequest(savedBoard.getTitle(), savedBoard.getContents());
     }
 
     /**
@@ -56,8 +54,7 @@ public class BoardService {
                         comment.getComment_id(),
                         comment.getContents()
                 )).collect(Collectors.toList());
-        Coordinate coordinate = new Coordinate(savedBoard.getLatitude(), savedBoard.getLongitude());
-        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities, coordinate, savedBoard.getStoreName());
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities);
     }
 
     /***
@@ -81,8 +78,7 @@ public class BoardService {
                         comment_.getComment_id(),
                         comment_.getContents()
                 )).collect(Collectors.toList());
-        Coordinate coordinate = new Coordinate(savedBoard.getLatitude(), savedBoard.getLongitude());
-        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities, coordinate, savedBoard.getStoreName());
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities);
     }
 
     /**
@@ -99,8 +95,7 @@ public class BoardService {
                         comment.getComment_id(),
                         comment.getContents()
                 )).collect(Collectors.toList());
-        Coordinate coordinate = new Coordinate(board.getLatitude(), board.getLongitude());
-        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt(), commentEntities, coordinate, board.getStoreName());
+        return new BoardEntityResponse(board.getId(), board.getTitle(), board.getContents(), board.getLikes(), board.getEditDt(), commentEntities);
     }
 
     /**
@@ -123,10 +118,9 @@ public class BoardService {
                         board.getEditDt(),
                         board.getComments().stream()
                                 .map(comments -> new CommentEntity(comments.getComment_id(), comments.getContents()))
-                                .collect(Collectors.toList()),
-                        new Coordinate(board.getLatitude(), board.getLongitude()
-                        ),
-                        board.getStoreName()))
+                                .collect(Collectors.toList())
+                        )
+                )
                 .collect(Collectors.toList());
         return new BoardListsResponse(boardLists, page.getTotalPages());
     }
@@ -165,25 +159,7 @@ public class BoardService {
                         comment.getComment_id(),
                         comment.getContents()
                 )).toList();
-        Coordinate coordinate = new Coordinate(board.getLatitude(), board.getLongitude());
-        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities, coordinate, savedBoard.getStoreName());
-    }
-
-    /**
-     * 게시판에 좌표를 추가하거나 업데이트합니다.
-     *
-     * @param id         좌표를 추가 또는 업데이트할 게시판의 ID
-     * @param coordinate 추가 또는 업데이트할 좌표 정보
-     * @return 업데이트된 좌표를 포함하는 Coordinate 객체
-     * @throws RuntimeException 게시판을 찾을 수 없는 경우 예외 발생
-     */
-    public Coordinate updateCoordinate(Long id, Coordinate coordinate) {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id" + id));
-        board.setLatitude(coordinate.getLongitude());
-        board.setLongitude(coordinate.getLongitude());
-
-        Board saveBoard = boardRepository.save(board);
-        return new Coordinate(saveBoard.getLatitude(), saveBoard.getLongitude());
+        return new BoardEntityResponse(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getLikes(), savedBoard.getEditDt(), commentEntities);
     }
 
     /**
