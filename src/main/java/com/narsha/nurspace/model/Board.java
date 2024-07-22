@@ -61,18 +61,6 @@ public class Board {
         comment.setBoard(null);
     }
 
-    // 위도
-    @Setter
-    private double latitude;
-
-    // 경도
-    @Setter
-    private double longitude;
-
-    // 가게명
-    @Setter
-    private String storeName = "";
-
     // 태그
     @Setter
     private String tag;
