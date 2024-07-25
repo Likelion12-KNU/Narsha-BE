@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class ProfileService {
 
-    private ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
 
     public ProfileService(ProfileRepository profileRepository){
         this.profileRepository = profileRepository;
